@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: PickBand
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true

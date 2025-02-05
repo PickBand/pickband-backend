@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Test Page</title>
+</head>
+<body>
+<div>
+    <div class="nav-bar">
+        <a href="/band/member-form">밴드 멤버 등록하기</a>
+        <a href="/band/members">밴드 멤버 조회하기</a>
+    </div>
+    
+    <div id="member-list"></div>
+    
+    <script>
+        window.onload = function () {
+            getMembers();
+            return false;
+        };
+        
+        function getMembers() {
+            fetch('/test/api/band-members', {
+                method: 'GET'
+            })
+            .then(response => {
+                if (response.status === 200) {
+                    response.json().then(data => {
+                        console.log(data);
+                        
+                        const memberListDom = document.querySelector('#member-list');
+                        let memberListStr = "";
+                        
+                        data.forEach(memberDto => {
+                            memberListStr += `
+                                이름: ${memberDto.name}
+                                파트: ${memberDto.part}
+                                이미지: ${memberDto.imageUrl}
+                            `;
+                        });
+                        
+                        memberListDom.innerText = memberListStr;
+                    });
+                } else {
+                    console.error('request failed.');
+                }
+            })
+            .catch(error => {
+                console.error('request failed', error);
+            });
+            
+            return false;
+        }
+    </script>
+</div>
+</body>
+</html>
