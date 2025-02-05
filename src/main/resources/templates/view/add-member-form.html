@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Test Page</title>
+</head>
+<body>
+<div>
+    <div class="nav-bar">
+        <a href="/band/member-form">밴드 멤버 등록하기</a>
+        <a href="/band/members">밴드 멤버 조회하기</a>
+    </div>
+    
+    <div id="add-member-wrapper">
+        <form onsubmit="return addMember()">
+            <span>이름: </span>
+            <input type="text" id="input-name"><br>
+            
+            <span>파트: </span>
+            <input type="text" id="input-part"><br>
+            
+            <span>이미지 URL: </span>
+            <input type="text" id="input-imageUrl"><br>
+            
+            <input type="submit">
+        </form>
+    </div>
+    
+    <script>
+        function addMember() {
+            const name = document.querySelector('#input-name').value;
+            const part = document.querySelector('#input-part').value;
+            const imageUrl = document.querySelector('#input-imageUrl').value;
+            const memberObj = {name: name, part: part, imageUrl: imageUrl};
+            
+            fetch('/test/api/band-member', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(memberObj)
+            })
+            .then(response => {
+                if (response.status === 200) {
+                    alert('멤버 등록이 완료되었습니다.')
+                } else {
+                    console.error('request failed');
+                }
+            })
+            .catch(error => {
+                console.error('request failed', error);
+            });
+            
+            return false;
+        }
+    </script>
+</div>
+</body>
+</html>
